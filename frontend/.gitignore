@@ -1,0 +1,44 @@
+# ======================
+# Python
+# ======================
+__pycache__/
+*.py[cod]
+
+# Virtual Environment
+venv/
+.venv/
+
+# Environment Variables
+.env
+**/.env
+
+# Vector Database
+database/
+**/database/
+chroma.sqlite3
+**/chroma.sqlite3
+
+# Uploaded Documents
+uploaded_files/
+**/uploaded_files/
+
+# VS Code
+.vscode/
+
+# Logs
+*.log
+logs/
+
+# Build
+build/
+dist/
+*.egg-info/
+
+# Cache
+.pytest_cache/
+.ipynb_checkpoints/
+.cache/
+
+# OS Files
+.DS_Store
+Thumbs.db
