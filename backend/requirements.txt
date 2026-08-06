@@ -1,0 +1,78 @@
+# ==========================
+# FastAPI
+# ==========================
+fastapi==0.116.1
+uvicorn[standard]==0.35.0
+python-multipart==0.0.20
+
+# ==========================
+# Configuration
+# ==========================
+python-dotenv==1.1.1
+pydantic==2.11.7
+pydantic-settings==2.10.1
+
+# ==========================
+# Database
+# ==========================
+sqlalchemy==2.0.43
+psycopg2-binary==2.9.10
+alembic==1.16.5
+
+# ==========================
+# File Handling
+# ==========================
+aiofiles==24.1.0
+
+# ==========================
+# Authentication
+# ==========================
+python-jose[cryptography]==3.5.0
+passlib[bcrypt]==1.7.4
+
+# ==========================
+# HTTP Client
+# ==========================
+httpx==0.28.1
+
+# ==========================
+# AI / RAG
+# ==========================
+langchain==0.3.27
+langchain-community==0.3.29
+langchain-openai==0.3.31
+langchain-text-splitters==0.3.9
+langgraph==0.6.6
+
+# ==========================
+# Vector Database
+# ==========================
+qdrant-client==1.15.1
+
+# ==========================
+# Document Loaders
+# ==========================
+pypdf==6.0.0
+python-docx==1.2.0
+pandas==2.3.2
+openpyxl==3.1.5
+unstructured==0.18.14
+markdown==3.8.2
+
+# ==========================
+# Embeddings
+# ==========================
+sentence-transformers==5.1.0
+
+# ==========================
+# Utilities
+# ==========================
+orjson==3.11.2
+tenacity==9.1.2
+tqdm==4.67.1
+
+# ==========================
+# Testing
+# ==========================
+pytest==8.4.2
+pytest-asyncio==1.1.0
