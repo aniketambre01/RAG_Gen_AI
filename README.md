@@ -1,4 +1,4 @@
-# 📚 AI-Powered Document Chatbot — RAG
+<img width="1366" height="768" alt="image" src="https://github.com/user-attachments/assets/163d0e1a-4057-4503-829d-c9ec96095fab" /># 📚 AI-Powered Document Chatbot — RAG
 
 An AI-powered **Document Question Answering system** built with **Python, Streamlit, LangChain, ChromaDB, Mistral AI, and embeddings**.
 
@@ -426,6 +426,7 @@ and provides document upload, vector-database creation, database status, and cha
 │         AI Response          │
 └──────────────────────────────┘
 ```
+<img width="1366" height="768" alt="image" src="https://github.com/user-attachments/assets/0f191e5a-eccb-45d0-a779-d336c3a41db8" />
 
 ---
 
