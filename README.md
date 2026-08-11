@@ -304,6 +304,7 @@ Frontend:
 ```text
 http://localhost:5173
 ```
+<img width="1366" height="686" alt="frontend_Demo" src="https://github.com/user-attachments/assets/00420a8a-0a16-426d-b6fb-9eb216b03172" />
 
 ---
 
