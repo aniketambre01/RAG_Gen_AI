@@ -1,415 +1,509 @@
-# 🤖 AI-Powered Document Intelligence Platform
+# 📚 AI-Powered Document Chatbot — RAG
 
-A full-stack **AI document interaction platform** built with **Python, FastAPI, React, TypeScript, and RAG technologies**. The application is designed to provide a structured interface for document management and AI-powered interaction with uploaded content.
+An AI-powered **Document Question Answering system** built with **Python, Streamlit, LangChain, ChromaDB, Mistral AI, and embeddings**.
+
+The application allows users to upload documents, convert their content into vector embeddings, store them in a vector database, and ask natural-language questions about the uploaded documents using a **Retrieval-Augmented Generation (RAG)** pipeline.
+
+---
 
 ## 🚀 Project Overview
 
-This project combines a **FastAPI backend** with a modern **React + TypeScript frontend** to create a foundation for an AI-powered document platform.
+Traditional LLM applications can generate answers based on their pretrained knowledge, but they may not have access to information contained in a user's private documents.
 
-The backend provides API endpoints for authentication and document-related operations, while the frontend provides the user-facing application interface.
+This project solves that problem using **Retrieval-Augmented Generation (RAG)**.
 
-The project is being developed with a focus on:
+Users can:
 
-* Retrieval-Augmented Generation (RAG)
-* LLM-powered document interaction
-* Vector search
-* Document processing
-* Secure API architecture
-* Full-stack application development
-* Scalable Python backend development
+1. Upload documents.
+2. Extract text from the documents.
+3. Split the text into smaller chunks.
+4. Generate vector embeddings.
+5. Store the embeddings in ChromaDB.
+6. Retrieve relevant document chunks based on a question.
+7. Send the retrieved context to an LLM.
+8. Generate an answer grounded in the uploaded documents.
+
+The application is implemented as a Streamlit web interface. The current application supports **PDF, DOCX, and TXT** uploads.
 
 ---
 
-## 🏗️ Architecture
+# 🧠 RAG Architecture
 
 ```text
-                    ┌─────────────────────────┐
-                    │       React Frontend    │
-                    │   React + TypeScript    │
-                    │      Vite + Tailwind    │
-                    └────────────┬────────────┘
-                                 │
-                              REST API
-                                 │
-                                 ▼
-                    ┌─────────────────────────┐
-                    │      FastAPI Backend    │
-                    │        Python           │
-                    ├─────────────────────────┤
-                    │ Authentication APIs     │
-                    │ Document APIs           │
-                    │ Application Services    │
-                    └────────────┬────────────┘
-                                 │
-                                 ▼
-                    ┌─────────────────────────┐
-                    │     Document Pipeline   │
-                    │                         │
-                    │ Document Processing     │
-                    │ Text Extraction         │
-                    │ Chunking                │
-                    │ Embeddings              │
-                    │ Vector Retrieval        │
-                    └────────────┬────────────┘
-                                 │
-                                 ▼
-                    ┌─────────────────────────┐
-                    │       Vector Store      │
-                    │        Qdrant           │
-                    └────────────┬────────────┘
-                                 │
-                                 ▼
-                    ┌─────────────────────────┐
-                    │       LLM Layer         │
-                    │ OpenAI / LLM APIs       │
-                    └─────────────────────────┘
+                    User
+                     │
+                     ▼
+            ┌─────────────────┐
+            │ Streamlit UI    │
+            │ Document Upload │
+            │ Question Input  │
+            └────────┬────────┘
+                     │
+                     ▼
+            ┌─────────────────┐
+            │ Document Loader │
+            └────────┬────────┘
+                     │
+                     ▼
+            ┌─────────────────┐
+            │ Text Splitting  │
+            │ & Chunking      │
+            └────────┬────────┘
+                     │
+                     ▼
+            ┌─────────────────┐
+            │ Embedding Model │
+            └────────┬────────┘
+                     │
+                     ▼
+            ┌─────────────────┐
+            │   ChromaDB      │
+            │ Vector Database  │
+            └────────┬────────┘
+                     │
+                     │ Similarity Search
+                     ▼
+            ┌─────────────────┐
+            │ Relevant Context│
+            └────────┬────────┘
+                     │
+                     ▼
+            ┌─────────────────┐
+            │   Mistral AI    │
+            │      LLM         │
+            └────────┬────────┘
+                     │
+                     ▼
+            ┌─────────────────┐
+            │   AI Answer     │
+            └─────────────────┘
 ```
+
+The implementation uses document loading, recursive text splitting, embeddings, Chroma vector storage, retrieval, and Mistral-based generation.
 
 ---
 
-# ✨ Key Features
+# ✨ Features
 
-### 📄 Document Processing
+### 📄 Document Upload
 
-* Upload and process documents through the application.
-* Designed for document ingestion and text extraction.
-* Supports a document-processing pipeline for downstream AI retrieval.
+Upload multiple supported documents through the Streamlit interface:
 
-### 🔍 RAG-Based Retrieval
+* PDF
+* DOCX
+* TXT
 
-* Uses Retrieval-Augmented Generation architecture.
-* Converts document content into searchable representations.
-* Retrieves relevant information before generating an AI response.
+The main application uses Streamlit's multi-file uploader for these formats.
 
-### 🧠 LLM Integration
+### 🔍 Retrieval-Augmented Generation
 
-* Integration with LLM APIs for AI-powered responses.
-* Designed to combine retrieved document context with LLM generation.
+The system follows a RAG pipeline:
 
-### 🔐 Authentication
+```text
+Document
+   ↓
+Text Extraction
+   ↓
+Chunking
+   ↓
+Embeddings
+   ↓
+ChromaDB
+   ↓
+Similarity Retrieval
+   ↓
+Relevant Context
+   ↓
+Mistral AI
+   ↓
+Answer
+```
 
-* Backend contains dedicated authentication APIs.
-* Authentication-related models and security components are included in the backend.
+### 🗄️ Vector Database
 
-### ⚡ FastAPI Backend
+The project uses **ChromaDB** to store document embeddings and retrieve relevant document chunks.
 
-* Python-based REST API using FastAPI.
-* Modular API structure.
-* Separate authentication and document routers.
-* CORS configuration for frontend-backend communication.
+The application also checks the local Chroma database and displays the current knowledge-base/chunk status in the Streamlit sidebar.
 
-### 💻 Modern Frontend
+### 🤖 Mistral AI
 
-The frontend is built using:
+Mistral AI is used as the language-model layer to generate responses based on retrieved document context.
 
-* React
-* TypeScript
-* Vite
-* React Router
-* Zustand
-* React Query
-* Axios
-* React Hook Form
-* Zod
-* React Dropzone
-* React Markdown
-* Tailwind CSS
-* Lucide React
+The repository also contains a standalone Mistral API example using the `mistral-small-latest` model.
 
-The current frontend dependency configuration confirms these technologies.
+### 💬 Context-Aware Question Answering
+
+Users can ask questions about the uploaded documents.
+
+The RAG workflow retrieves relevant chunks before generating the final answer, helping keep responses grounded in the document content.
 
 ---
 
 # 🛠️ Technology Stack
 
-## Backend
+| Technology        | Purpose                          |
+| ----------------- | -------------------------------- |
+| **Python**        | Application development          |
+| **Streamlit**     | Web interface                    |
+| **LangChain**     | RAG pipeline and LLM integration |
+| **Mistral AI**    | LLM / response generation        |
+| **ChromaDB**      | Vector database                  |
+| **Embeddings**    | Semantic document representation |
+| **PyPDF**         | PDF processing                   |
+| **python-docx**   | DOCX processing                  |
+| **Unstructured**  | Document processing              |
+| **Pandas**        | Data processing                  |
+| **NumPy**         | Numerical operations             |
+| **python-dotenv** | Environment configuration        |
 
-| Technology            | Purpose                     |
-| --------------------- | --------------------------- |
-| Python                | Core backend language       |
-| FastAPI               | REST API framework          |
-| SQLAlchemy            | Database ORM                |
-| Alembic               | Database migrations         |
-| Pydantic              | Data validation             |
-| Qdrant Client         | Vector database integration |
-| LangChain             | LLM/RAG framework           |
-| LangGraph             | AI workflow/orchestration   |
-| OpenAI                | LLM/API integration         |
-| Sentence Transformers | Embeddings                  |
-| PyMuPDF / pypdf       | PDF processing              |
-| python-docx           | DOCX processing             |
-| OpenPyXL              | Excel processing            |
-| pytest                | Testing                     |
-| Uvicorn               | ASGI server                 |
-
-The repository's backend requirements include FastAPI, LangChain, LangGraph, OpenAI, Qdrant, Sentence Transformers, SQLAlchemy, document-processing libraries, and Uvicorn.
-
-## Frontend
-
-| Technology      | Purpose                 |
-| --------------- | ----------------------- |
-| React           | UI                      |
-| TypeScript      | Type-safe development   |
-| Vite            | Frontend build tool     |
-| Tailwind CSS    | Styling                 |
-| Axios           | API communication       |
-| React Query     | Server-state management |
-| Zustand         | Client-state management |
-| React Router    | Routing                 |
-| React Hook Form | Form management         |
-| Zod             | Validation              |
-| React Dropzone  | File upload             |
-| React Markdown  | Markdown rendering      |
+These dependencies are defined in the repository's `requirements.txt`.
 
 ---
 
-# 📁 Project Structure
+# 📂 Project Structure
 
 ```text
 RAG_Gen_AI/
 │
-├── backend/
-│   ├── alembic/
-│   ├── api/
-│   │   └── v1/
-│   ├── app/
-│   │   ├── api/
-│   │   ├── core/
-│   │   ├── database/
-│   │   └── ...
-│   ├── uploads/
-│   ├── requirements.txt
-│   ├── alembic.ini
-│   ├── .env.example
-│   └── test_security.py
+├── utils/
+│   ├── document_loader.py
+│   ├── vector_store.py
+│   ├── rag_chain.py
+│   └── helper.py
 │
-├── frontend/
-│   ├── public/
-│   ├── src/
-│   ├── utils/
-│   ├── package.json
-│   ├── vite.config.ts
-│   ├── tsconfig.json
-│   └── README.md
-│
+├── app.py
+├── APP1.py
+├── Doc.py
+├── docloader.py
+├── config.py
+├── test.py
+├── requirements.txt
+├── .gitignore
 └── README.md
 ```
 
-The current branch contains dedicated `backend` and `frontend` directories, with backend API/application/database components and a React/TypeScript frontend.
+### Important Components
+
+**`app.py`**
+
+Main Streamlit application responsible for:
+
+* Application UI
+* Document upload
+* Vector database initialization
+* RAG chain initialization
+* Chat interaction
+* Database status
+* Chat/database controls
+
+The application initializes `DocumentLoader`, `VectorStore`, and `RAGChain` components.
+
+**`utils/document_loader.py`**
+
+Responsible for document loading and processing.
+
+**`utils/vector_store.py`**
+
+Handles vector database functionality using ChromaDB.
+
+**`utils/rag_chain.py`**
+
+Contains the RAG/LLM processing workflow.
+
+**`utils/helper.py`**
+
+Contains application helper functions such as directory creation, uploaded-file handling, session-state initialization, database statistics, and supported-file handling.
 
 ---
 
-# 🔧 Backend Setup
+# 🔄 RAG Pipeline Explained
 
-### 1. Clone the repository
+## 1. Document Upload
+
+The user uploads one or more documents through the Streamlit interface.
+
+```text
+PDF / DOCX / TXT
+       ↓
+Streamlit File Uploader
+```
+
+The current `app.py` accepts these three file types.
+
+## 2. Document Loading
+
+The uploaded documents are processed using the project's document-loader component.
+
+## 3. Text Splitting
+
+Large documents are divided into smaller chunks so they can be efficiently embedded and retrieved.
+
+The repository's RAG implementation demonstrates recursive character splitting with a chunk size of **1000** and overlap of **200** in `Doc.py`.
+
+## 4. Embedding Generation
+
+Document chunks are converted into numerical vector representations.
+
+These embeddings allow the system to perform semantic similarity search.
+
+## 5. ChromaDB
+
+The generated embeddings are stored in a persistent ChromaDB vector store.
+
+```text
+Document Chunk
+      ↓
+Embedding
+      ↓
+ChromaDB
+```
+
+## 6. Retrieval
+
+When a user asks a question, the system retrieves the most relevant document chunks.
+
+The example RAG implementation uses **MMR (Maximal Marginal Relevance)** retrieval with `k=4` and `fetch_k=10`.
+
+## 7. LLM Generation
+
+The retrieved context is passed to the Mistral AI model along with the user's question.
+
+The model then generates the final response.
+
+---
+
+# 🧪 Example Workflow
+
+Suppose the user uploads:
+
+```text
+Machine_Learning_Notes.pdf
+```
+
+Then asks:
+
+```text
+What is supervised learning?
+```
+
+The application performs:
+
+```text
+Question
+   ↓
+Embedding / Retrieval
+   ↓
+Search ChromaDB
+   ↓
+Retrieve relevant chunks
+   ↓
+Build context
+   ↓
+Send context + question to Mistral
+   ↓
+Generate answer
+```
+
+The response is therefore based on information retrieved from the uploaded document.
+
+---
+
+# ⚙️ Installation
+
+## 1. Clone the Repository
 
 ```bash
 git clone https://github.com/aniketambre01/RAG_Gen_AI.git
+```
 
+```bash
 cd RAG_Gen_AI
 ```
 
-### 2. Checkout the full-stack branch
-
-```bash
-git checkout feature/full-stack-ai-platform
-```
-
-### 3. Create a virtual environment
-
-```bash
-cd backend
-
-python -m venv .venv
-```
+## 2. Create Virtual Environment
 
 ### Windows
 
 ```bash
-.venv\Scripts\activate
+python -m venv venv
+venv\Scripts\activate
 ```
 
 ### Linux / macOS
 
 ```bash
-source .venv/bin/activate
+python3 -m venv venv
+source venv/bin/activate
 ```
 
-### 4. Install dependencies
+## 3. Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 5. Configure environment variables
+The repository's dependency file includes Streamlit, Mistral AI, LangChain, LangChain Chroma integration, ChromaDB, document loaders, NumPy, Pandas, and related utilities.
 
-Create a `.env` file using `.env.example` as a reference.
+---
 
-Add the required configuration for:
+# 🔑 Environment Variables
 
-```text
-DATABASE_URL=
-QDRANT_URL=
-OPENAI_API_KEY=
+Create a `.env` file in the project root.
+
+Example:
+
+```env
+MISTRAL_API_KEY=your_mistral_api_key
 ```
 
-> Do not commit API keys, passwords, or other secrets to GitHub.
+If using the embedding configuration that requires OpenAI, configure the corresponding API key as required by that implementation.
 
-### 6. Start the backend
+```env
+OPENAI_API_KEY=your_openai_api_key
+```
+
+**Never commit API keys or other secrets to GitHub.**
+
+---
+
+# ▶️ Run the Application
+
+Start the Streamlit application using:
 
 ```bash
-uvicorn app.main:app --reload
+streamlit run app.py
 ```
 
-The FastAPI application provides root and health endpoints, and registers authentication and document routers.
-
-Backend:
+Streamlit will provide a local URL, typically:
 
 ```text
-http://localhost:8000
+http://localhost:8501
 ```
 
-API documentation:
+The application opens with the title:
 
 ```text
-http://localhost:8000/docs
+📚 Chat with Your Documents
+```
+
+and provides document upload, vector-database creation, database status, and chat functionality.
+
+---
+
+# 🖥️ Application Workflow
+
+```text
+┌──────────────────────────────┐
+│       Upload Documents       │
+└──────────────┬───────────────┘
+               ↓
+┌──────────────────────────────┐
+│   Create Vector Database     │
+└──────────────┬───────────────┘
+               ↓
+┌──────────────────────────────┐
+│      Process Documents       │
+└──────────────┬───────────────┘
+               ↓
+┌──────────────────────────────┐
+│       Store Embeddings       │
+│          ChromaDB            │
+└──────────────┬───────────────┘
+               ↓
+┌──────────────────────────────┐
+│       Ask a Question         │
+└──────────────┬───────────────┘
+               ↓
+┌──────────────────────────────┐
+│       Retrieve Context       │
+└──────────────┬───────────────┘
+               ↓
+┌──────────────────────────────┐
+│         Mistral AI           │
+└──────────────┬───────────────┘
+               ↓
+┌──────────────────────────────┐
+│         AI Response          │
+└──────────────────────────────┘
 ```
 
 ---
 
-# 🎨 Frontend Setup
+# 📊 Key Concepts Demonstrated
 
-Open another terminal:
+This project demonstrates practical implementation of:
 
-```bash
-cd frontend
-```
-
-Install dependencies:
-
-```bash
-npm install
-```
-
-Start the development server:
-
-```bash
-npm run dev
-```
-
-The frontend package configuration provides Vite development, build, lint, and preview scripts.
-
-Frontend:
-
-```text
-http://localhost:5173
-```
+* Python application development
+* Streamlit
+* Retrieval-Augmented Generation
+* Large Language Models
+* Prompt Engineering
+* Vector databases
+* Semantic search
+* Document processing
+* Text chunking
+* Embeddings
+* LangChain
+* Mistral AI API integration
+* ChromaDB
+* Context-aware question answering
+* Environment-variable management
 
 ---
 
-# 🔄 RAG Pipeline
+# 🎯 Learning Outcomes
 
-The core AI workflow is designed around the following process:
+Through this project, the following concepts are demonstrated:
 
-```text
-User Uploads Document
-        │
-        ▼
-Document Loader
-        │
-        ▼
-Text Extraction
-        │
-        ▼
-Text Splitting / Chunking
-        │
-        ▼
-Embedding Generation
-        │
-        ▼
-Vector Database
-     (Qdrant)
-        │
-        ▼
-Similarity Search
-        │
-        ▼
-Relevant Context
-        │
-        ▼
-LLM
-        │
-        ▼
-Context-Aware Response
-```
+### RAG
 
-This architecture allows the LLM to generate responses using information retrieved from the user's documents rather than relying only on its pretrained knowledge.
+Understanding how retrieved external knowledge can be provided to an LLM before generating an answer.
+
+### Vector Search
+
+Understanding how document embeddings can be stored and searched semantically.
+
+### Document Processing
+
+Understanding how different document formats can be converted into text suitable for an AI pipeline.
+
+### LLM Integration
+
+Understanding how an application can combine retrieved context with an LLM to produce document-grounded responses.
+
+### AI Application Development
+
+Building an end-to-end AI application rather than only experimenting with an individual model.
 
 ---
 
-# 🧪 Testing
+# 🚧 Future Improvements
 
-Backend tests can be executed using:
+Potential enhancements include:
 
-```bash
-pytest
-```
-
-The repository currently includes a security test file under the backend directory.
-
----
-
-# 🔒 Security
-
-The project includes authentication and security-related backend components.
-
-For local development:
-
-* Store secrets in `.env`.
-* Never commit API keys.
-* Never expose database credentials.
-* Use environment variables for deployment configuration.
-* Review CORS settings before production deployment.
-
----
-
-# 📌 Current Development Status
-
-This project is actively being developed as a **full-stack AI platform**.
-
-Current repository structure includes:
-
-* Python/FastAPI backend
+* FastAPI backend
 * React/TypeScript frontend
-* Authentication APIs
-* Document APIs
-* RAG/LLM dependencies
-* Qdrant integration
-* Database layer
-* Frontend state and API management
-* Document-processing dependencies
-
-The GitHub branch currently contains three commits and separate backend/frontend applications.
-
----
-
-# 🎯 Future Enhancements
-
-Planned improvements can include:
-
-* Advanced hybrid search
-* Reranking models
+* Qdrant vector database
+* Authentication and authorization
+* Streaming LLM responses
+* Hybrid search
+* Reranking
 * Conversational memory
 * Multi-document reasoning
-* Agentic workflows
-* Streaming LLM responses
-* Role-based access control
-* Improved document preview
-* Background document processing
-* Docker-based deployment
-* CI/CD pipeline
+* Support for additional file formats
+* Docker deployment
+* CI/CD
 * Cloud deployment
+* Automated testing
 * Monitoring and logging
+
+---
+
+# 📌 Project Status
+
+This repository represents the **Streamlit-based RAG implementation** of the project.
+
+A separate full-stack development branch is also being developed with a Python/FastAPI backend and React/TypeScript frontend. The `main` branch should therefore be understood as the earlier/current Streamlit implementation rather than the full-stack version.
 
 ---
 
@@ -419,20 +513,16 @@ Planned improvements can include:
 
 Python Developer | GenAI Developer | AI Engineer
 
-GitHub:
+**GitHub:**
 https://github.com/aniketambre01
 
-LinkedIn:
+**LinkedIn:**
 https://www.linkedin.com/in/aniketambre/
 
 ---
 
-# ⭐ Project
+# ⭐ Repository
 
-If you find this project useful or interesting, consider giving the repository a ⭐.
+[RAG_Gen_AI — GitHub Repository](https://github.com/aniketambre01/RAG_Gen_AI?utm_source=chatgpt.com)
 
-**Repository:**
-https://github.com/aniketambre01/RAG_Gen_AI
-
-**Branch:**
-`feature/full-stack-ai-platform`
+If you find this project useful, consider giving it a ⭐.
